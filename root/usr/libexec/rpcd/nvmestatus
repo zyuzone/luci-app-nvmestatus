@@ -1,0 +1,75 @@
+#!/bin/sh
+
+case "$1" in
+	list)
+		echo '{"smart_log":{},"device_list":{}}'
+	;;
+	call)
+		case "$2" in
+			device_list)
+				devices=$(nvme list 2>/dev/null | awk 'NR>2 && /^\/dev/ {print $1}')
+				echo -n '{"devices":['
+				first=1
+				for dev in $devices; do
+					[ $first -eq 0 ] && echo -n ','
+					echo -n "\"$dev\""
+					first=0
+				done
+				echo ']}'
+			;;
+			smart_log)
+				read input
+				device=$(echo "$input" | jsonfilter -e '@.device' 2>/dev/null)
+				[ -z "$device" ] && device="/dev/nvme0n1"
+
+				log=$(nvme smart-log "$device" 2>/dev/null)
+				[ -z "$log" ] && echo '{"error":"Failed to read NVMe SMART log"}' && exit 1
+
+				get_val() {
+					echo "$log" | grep -i "$1" | head -1 | awk -F': ' '{gsub(/^[ \t]+|[ \t]+$/, "", $2); print $2}'
+				}
+
+				critical_warning=$(get_val "critical_warning")
+				temperature=$(get_val "^temperature" | awk '{print $1}')
+				available_spare=$(echo "$log" | grep -i "available_spare" | grep -iv "threshold" | head -1 | awk -F': ' '{gsub(/^[ \t]+|[ \t]+$/, "", $2); gsub(/%/, "", $2); print $2}')
+				available_spare_threshold=$(get_val "available_spare_threshold" | tr -d '%')
+				percentage_used=$(get_val "percentage_used" | tr -d '%')
+				data_units_read=$(get_val "Data Units Read" | awk -F'[()]' '{gsub(/^[ \t]+|[ \t]+$/, "", $2); print $2}')
+				data_units_written=$(get_val "Data Units Written" | awk -F'[()]' '{gsub(/^[ \t]+|[ \t]+$/, "", $2); print $2}')
+				host_read_commands=$(get_val "host_read_commands")
+				host_write_commands=$(get_val "host_write_commands")
+				controller_busy_time=$(get_val "controller_busy_time")
+				power_cycles=$(get_val "power_cycles")
+				power_on_hours=$(get_val "power_on_hours")
+				unsafe_shutdowns=$(get_val "unsafe_shutdowns")
+				media_errors=$(get_val "media_errors")
+				num_err_log_entries=$(get_val "num_err_log_entries")
+				warning_temp_time=$(get_val "Warning Temperature Time")
+				critical_temp_time=$(get_val "Critical Composite Temperature Time")
+
+				cat <<JSONEOF
+{
+	"device": "$device",
+	"critical_warning": "$critical_warning",
+	"temperature": "$temperature",
+	"available_spare": "$available_spare",
+	"available_spare_threshold": "$available_spare_threshold",
+	"percentage_used": "$percentage_used",
+	"data_units_read": "$data_units_read",
+	"data_units_written": "$data_units_written",
+	"host_read_commands": "$host_read_commands",
+	"host_write_commands": "$host_write_commands",
+	"controller_busy_time": "$controller_busy_time",
+	"power_cycles": "$power_cycles",
+	"power_on_hours": "$power_on_hours",
+	"unsafe_shutdowns": "$unsafe_shutdowns",
+	"media_errors": "$media_errors",
+	"num_err_log_entries": "$num_err_log_entries",
+	"warning_temp_time": "$warning_temp_time",
+	"critical_temp_time": "$critical_temp_time"
+}
+JSONEOF
+			;;
+		esac
+	;;
+esac

@@ -1,0 +1,10 @@
+{
+	"luci-app-nvmestatus": {
+		"description": "Grant access to NVMe status monitor",
+		"read": {
+			"ubus": {
+				"nvmestatus": [ "smart_log", "device_list" ]
+			}
+		}
+	}
+}

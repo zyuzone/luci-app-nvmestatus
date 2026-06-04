@@ -1,0 +1,97 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "NVMe Health Monitor"
+msgstr "NVMe 健康监控"
+
+msgid "Refresh Now"
+msgstr "立即刷新"
+
+msgid "Loading..."
+msgstr "正在加载..."
+
+msgid "Temperature"
+msgstr "当前温度"
+
+msgid "Life Used"
+msgstr "寿命消耗"
+
+msgid "Spare Available"
+msgstr "备用块剩余"
+
+msgid "Health Status"
+msgstr "🛡️ 健康状态"
+
+msgid "Critical Warning"
+msgstr "严重警告"
+
+msgid "Normal"
+msgstr "正常"
+
+msgid "Warning"
+msgstr "警告"
+
+msgid "Media Errors"
+msgstr "介质错误"
+
+msgid "No Errors"
+msgstr "无错误"
+
+msgid "error(s)"
+msgstr "个错误"
+
+msgid "Error Log Entries"
+msgstr "错误日志条目"
+
+msgid "No Records"
+msgstr "无记录"
+
+msgid "record(s)"
+msgstr "条"
+
+msgid "Unsafe Shutdowns"
+msgstr "非正常关机次数"
+
+msgid "Usage Statistics"
+msgstr "📊 使用统计"
+
+msgid "Power On Hours"
+msgstr "累计开机时长"
+
+msgid "Power Cycles"
+msgstr "开机次数"
+
+msgid "Controller Busy Time"
+msgstr "控制器繁忙时间"
+
+msgid "Spare Threshold"
+msgstr "备用块阈值"
+
+msgid "Data Throughput"
+msgstr "💾 数据吞吐"
+
+msgid "Total Read"
+msgstr "累计读取"
+
+msgid "Total Written"
+msgstr "累计写入"
+
+msgid "Read Commands"
+msgstr "读命令总数"
+
+msgid "Write Commands"
+msgstr "写命令总数"
+
+msgid "Temperature History"
+msgstr "🌡️ 温度历史"
+
+msgid "Current Temp"
+msgstr "当前温度"
+
+msgid "Warning Temp Time"
+msgstr "警告温度累计"
+
+msgid "Critical Temp Time"
+msgstr "临界温度累计"

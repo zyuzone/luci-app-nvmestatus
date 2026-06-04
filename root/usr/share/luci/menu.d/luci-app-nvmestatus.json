@@ -1,0 +1,13 @@
+{
+	"admin/system/nvmestatus": {
+		"title": "NVMe 健康监控",
+		"order": 80,
+		"action": {
+			"type": "view",
+			"path": "nvmestatus/status"
+		},
+		"depends": {
+			"acl": [ "luci-app-nvmestatus" ]
+		}
+	}
+}
